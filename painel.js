@@ -225,7 +225,13 @@
             if (visiveis.length > 0) {
                 const dest = visiveis.find(x => x.f.includes('VAREJO')) || visiveis[0];
                 document.getElementById('pgr').innerText = dest.a + ' esp. | ' + dest.i + ' at.';
-                document.getElementById('pgb').innerHTML = visiveis.map(x => '<div class="pgc"><div class="pgt"><span>' + x.f + '</span><span class="' + (parseInt(x.a) > 0 ? 'pga' : 'pgo') + '">' + x.a + ' aguardando</span></div><div style="display:flex;justify-content:space-between;font-size:12px"><span>Int: <b>' + x.i + '</b></span><span>Fila: <b>' + x.ef + '</b></span><span>Fora: <b>' + x.ff + '</b></span></div></div>').join('');
+                document.getElementById('pgb').innerHTML = visiveis.map(x => {
+                    const totFila = parseInt(x.ef) || 0;
+                    const intAtivos = parseInt(x.i) || 0;
+                    const foraFila = parseInt(x.ff) || 0;
+                    const ociosos = Math.max(0, totFila - (intAtivos + foraFila));
+                    return '<div class="pgc"><div class="pgt"><span>' + x.f + '</span><span class="' + (parseInt(x.a) > 0 ? 'pga' : 'pgo') + '">' + x.a + ' aguardando</span></div><div style="display:flex;justify-content:space-between;font-size:12px"><span>Int: <b>' + x.i + '</b></span><span>Fila: <b>' + x.ef + '</b></span><span>Fora: <b>' + x.ff + '</b></span><span>Oci: <b style="color:#4ade80">' + ociosos + '</b></span></div></div>';
+                }).join('');
             } else {
                 document.getElementById('pgr').innerText = '0 sel.';
                 document.getElementById('pgb').innerHTML = '<span style="color:#94a3b8">Nenhuma fila marcada no filtro ⚙️</span>';
